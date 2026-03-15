@@ -1,8 +1,21 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Navbar } from './components';
+import Feed from './pages/Feed';
+import VideoDetails from './pages/VideoDetails';
+import ChannelDetails from './pages/ChannelDetails';
+import SearchFeed from './pages/SearchFeed';
+
 function App() {
   return (
-    <div className="bg-[#0f0f0f] min-h-screen text-white flex items-center justify-center">
-      <h1 className="text-4xl font-bold text-red-600">YouTube Clone 🎬</h1>
-    </div>
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path='/' element={<Feed />} />
+        <Route path='/video/:id' element={<VideoDetails />} />
+        <Route path='/channel/:id' element={<ChannelDetails />} />
+        <Route path='/search/:searchTerm' element={<SearchFeed />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

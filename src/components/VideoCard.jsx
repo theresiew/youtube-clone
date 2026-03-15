@@ -1,16 +1,22 @@
 import { Link } from 'react-router-dom';
-import { demoThumbnailUrl, demoVideoUrl, demoVideoTitle, demoChannelUrl, demoChannelTitle } from '../utils/constants';
+import { demoVideoUrl, demoVideoTitle, demoChannelUrl, demoChannelTitle } from '../utils/constants';
 
 const VideoCard = ({ video: { id: { videoId }, snippet } }) => {
+ const thumbnailUrl = snippet?.thumbnails?.high?.url || `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+
   return (
-    <div className="flex flex-col gap-2 group">
+    <div className="flex flex-col gap-2 group cursor-pointer">
       {/* Thumbnail */}
       <Link to={videoId ? `/video/${videoId}` : demoVideoUrl}>
-        <div className="relative overflow-hidden rounded-xl">
+        <div className="relative overflow-hidden rounded-xl bg-[#272727]">
           <img
-            src={snippet?.thumbnails?.high?.url || demoThumbnailUrl}
+            src={thumbnailUrl}
             alt={snippet?.title}
             className="w-full aspect-video object-cover group-hover:scale-105 transition duration-300"
+           onError={(e) => {
+  e.target.onerror = null;
+  e.target.src = `https://picsum.photos/seed/${videoId}/480/270`;
+}}
           />
         </div>
       </Link>
@@ -27,7 +33,7 @@ const VideoCard = ({ video: { id: { videoId }, snippet } }) => {
         <div className="flex flex-col flex-1 min-w-0">
           {/* Title */}
           <Link to={videoId ? `/video/${videoId}` : demoVideoUrl}>
-            <h3 className="text-white text-sm font-medium leading-snug line-clamp-2 group-hover:text-gray-300 transition">
+            <h3 className="text-white text-sm font-medium leading-snug line-clamp-2 hover:text-gray-300 transition">
               {snippet?.title || demoVideoTitle}
             </h3>
           </Link>
