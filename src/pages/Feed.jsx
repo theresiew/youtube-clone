@@ -43,26 +43,22 @@ const Feed = () => {
         )}
       </div>
 
-     {/* Mobile Bottom Nav */}
-<div className="md:hidden fixed bottom-0 left-0 right-0 bg-[#0f0f0f] border-t border-[#272727] z-50 flex justify-around items-center h-14">
-  {[
-    { label: 'Home',     keyword: 'New Videos', emoji: '🏠' },
-    { label: 'Trending', keyword: 'Trending',   emoji: '🔥' },
-    { label: 'Coding',   keyword: 'Coding',     emoji: '💻' },
-    { label: 'Music',    keyword: 'Music',       emoji: '🎵' },
-    { label: 'Gaming',   keyword: 'Gaming',      emoji: '🎮' },
-  ].map((item) => (
-    <button
-      key={item.label}
-      onClick={() => setSelectedCategory(item.keyword)}
-      className={`flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-xs transition
-        ${selectedCategory === item.keyword ? 'text-white' : 'text-[#717171]'}`}
-    >
-      <span className="text-xl">{item.emoji}</span>
-      <span>{item.label}</span>
-    </button>
-  ))}
-</div>
+      {/* Mobile Bottom Nav */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[#0f0f0f] border-t border-[#272727] z-50 flex justify-around items-center py-2 px-1">
+        {categories.slice(0, 5).map((cat) => (
+          <button
+            key={cat.name}
+            onClick={() => setSelectedCategory(cat.keyword)}
+            className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg text-xs transition min-w-0
+              ${selectedCategory === cat.keyword ? 'text-white' : 'text-[#aaaaaa]'}`}
+          >
+            <span className={`text-2xl transition ${selectedCategory === cat.keyword ? 'text-white' : 'text-[#aaaaaa]'}`}>
+              {cat.icon}
+            </span>
+            <span className="text-[10px] truncate w-full text-center">{cat.name}</span>
+          </button>
+        ))}
+      </div>
 
     </div>
   );
