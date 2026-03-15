@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Navbar } from './components';
+import { Navbar, MobileNav } from './components';
 import Feed from './pages/Feed';
 import VideoDetails from './pages/VideoDetails';
 import ChannelDetails from './pages/ChannelDetails';
@@ -9,6 +9,7 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar />
+      <MobileNav />
       <Routes>
         <Route path='/' element={<Feed />} />
         <Route path='/video/:id' element={<VideoDetails />} />
