@@ -9,23 +9,37 @@ const VideoDetails = () => {
   const { id } = useParams();
   const [showFullDesc, setShowFullDesc] = useState(false);
 
-  const { data: videoDetail, isLoading } = useQuery({
+  const { data: videoDetail, isLoading, isError } = useQuery({
     queryKey: ['video', id],
     queryFn: () => fetchFromAPI(`videos?part=snippet,statistics&id=${id}`),
   });
 
   const { data: relatedVideos } = useQuery({
     queryKey: ['related', id],
-    queryFn: () => fetchFromAPI(`search?part=snippet&relatedToVideoId=${id}&type=video`),
+    queryFn: () => fetchFromAPI(`search?part=snippet&relatedToVideoId=${id}&type=video&maxResults=15`),
   });
 
-  const video = videoDetail?.items[0];
+  const video = videoDetail?.items?.[0];
   const snippet = video?.snippet;
   const statistics = video?.statistics;
+
+  const { data: channelData } = useQuery({
+    queryKey: ['channelStats', snippet?.channelId],
+    queryFn: () => fetchFromAPI(`channels?part=statistics&id=${snippet?.channelId}`),
+    enabled: !!snippet?.channelId,
+  });
+
+  const subscriberCount = channelData?.items?.[0]?.statistics?.subscriberCount;
 
   if (isLoading) return (
     <div className="pt-14 bg-[#0f0f0f] min-h-screen flex items-center justify-center">
       <Loader />
+    </div>
+  );
+
+  if (isError) return (
+    <div className="pt-14 bg-[#0f0f0f] min-h-screen flex items-center justify-center">
+      <p className="text-red-500 text-lg">Something went wrong. Please try again later.</p>
     </div>
   );
 
@@ -68,7 +82,11 @@ const VideoDetails = () => {
                   {snippet?.channelTitle || 'Channel'}
                   <MdCheckCircle className="text-gray-400 text-xs" />
                 </p>
-                <p className="text-[#aaaaaa] text-xs">1.85M subscribers</p>
+                {subscriberCount && (
+                  <p className="text-[#aaaaaa] text-xs">
+                    {parseInt(subscriberCount).toLocaleString()} subscribers
+                  </p>
+                )}
               </div>
               <button
                 onClick={(e) => e.preventDefault()}
@@ -84,7 +102,7 @@ const VideoDetails = () => {
                 <button className="flex items-center gap-1.5 px-4 py-2 hover:bg-[#3f3f3f] transition border-r border-[#3f3f3f]">
                   <MdThumbUp className="text-white text-lg" />
                   <span className="text-white text-sm font-medium">
-                    {parseInt(statistics?.likeCount || 120000).toLocaleString()}
+                    {parseInt(statistics?.likeCount || 0).toLocaleString()}
                   </span>
                 </button>
                 <button className="flex items-center px-4 py-2 hover:bg-[#3f3f3f] transition">
@@ -101,18 +119,20 @@ const VideoDetails = () => {
             </div>
           </div>
 
-          {/* Description */}
+          {/* Description Box */}
           <div
             className="mt-3 bg-[#1a1a1a] hover:bg-[#222222] rounded-xl p-3 md:p-4 cursor-pointer transition mx-1"
             onClick={() => setShowFullDesc(!showFullDesc)}
           >
             <div className="flex gap-2 text-white text-sm font-semibold mb-1 flex-wrap">
-              <span>{parseInt(statistics?.viewCount || 2348573).toLocaleString()} views</span>
+              <span>{parseInt(statistics?.viewCount || 0).toLocaleString()} views</span>
               <span>•</span>
               <span>
                 {snippet?.publishedAt
-                  ? new Date(snippet.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-                  : 'January 1, 2024'}
+                  ? new Date(snippet.publishedAt).toLocaleDateString('en-US', {
+                      year: 'numeric', month: 'long', day: 'numeric',
+                    })
+                  : ''}
               </span>
             </div>
             <p className={`text-[#aaaaaa] text-sm leading-relaxed ${showFullDesc ? '' : 'line-clamp-2'}`}>
@@ -127,32 +147,33 @@ const VideoDetails = () => {
         {/* Right Column - Related Videos */}
         <div className="w-full lg:w-[400px] xl:w-[420px] flex-shrink-0 px-3 lg:px-4 lg:pt-6 pb-6">
           <div className="flex flex-col gap-2">
-            {relatedVideos?.items?.filter(item => item.id.videoId).map((video, idx) => (
-              <Link
-                key={idx}
-                to={`/video/${video.id.videoId}`}
-                className="flex gap-2 group hover:bg-[#1a1a1a] rounded-xl p-1 transition"
-              >
-                <div className="flex-shrink-0 w-40 h-[90px] rounded-lg overflow-hidden bg-[#272727]">
-                  <img
-                    src={`https://img.youtube.com/vi/${video.id.videoId}/mqdefault.jpg`}
-                    alt={video.snippet?.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = `https://picsum.photos/seed/${video.id.videoId}/320/180`;
-                    }}
-                  />
-                </div>
-                <div className="flex-1 min-w-0 py-1">
-                  <p className="text-white text-xs font-semibold line-clamp-2 leading-snug group-hover:text-gray-300 transition">
-                    {video.snippet?.title}
-                  </p>
-                  <p className="text-[#aaaaaa] text-xs mt-1">{video.snippet?.channelTitle}</p>
-                  <p className="text-[#aaaaaa] text-xs">{Math.floor(Math.random() * 10) + 1}M views</p>
-                </div>
-              </Link>
-            ))}
+            {relatedVideos?.items
+              ?.filter((item) => item.id?.videoId)
+              .map((video, idx) => (
+                <Link
+                  key={idx}
+                  to={`/video/${video.id.videoId}`}
+                  className="flex gap-2 group hover:bg-[#1a1a1a] rounded-xl p-1 transition"
+                >
+                  <div className="flex-shrink-0 w-40 h-[90px] rounded-lg overflow-hidden bg-[#272727]">
+                    <img
+                      src={`https://img.youtube.com/vi/${video.id.videoId}/mqdefault.jpg`}
+                      alt={video.snippet?.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = `https://picsum.photos/seed/${video.id.videoId}/320/180`;
+                      }}
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0 py-1">
+                    <p className="text-white text-xs font-semibold line-clamp-2 leading-snug group-hover:text-gray-300 transition">
+                      {video.snippet?.title}
+                    </p>
+                    <p className="text-[#aaaaaa] text-xs mt-1">{video.snippet?.channelTitle}</p>
+                  </div>
+                </Link>
+              ))}
           </div>
         </div>
 

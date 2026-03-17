@@ -1,19 +1,22 @@
-import { MdHome, MdLocalFireDepartment, MdSportsEsports, MdLiveTv } from 'react-icons/md';
+import { MdHome, MdLocalFireDepartment, MdSportsEsports, MdLiveTv, MdSportsBasketball, MdSchool } from 'react-icons/md';
 import { BsMusicNoteBeamed } from 'react-icons/bs';
 import { GiFilmProjector } from 'react-icons/gi';
-import { FaCode, FaGlobe } from 'react-icons/fa';
+import { FaCode, FaGlobe, FaLaughSquint } from 'react-icons/fa';
 import { BiNews } from 'react-icons/bi';
 
 export const categories = [
-  { name: 'Home',     icon: <MdHome />,                keyword: 'New Videos' },
-  { name: 'Trending', icon: <MdLocalFireDepartment />, keyword: 'Trending' },
-  { name: 'Coding',   icon: <FaCode />,                keyword: 'Coding' },
-  { name: 'Music',    icon: <BsMusicNoteBeamed />,     keyword: 'Music' },
-  { name: 'Gaming',   icon: <MdSportsEsports />,       keyword: 'Gaming' },
-  { name: 'Movies',   icon: <GiFilmProjector />,       keyword: 'Movies' },
-  { name: 'Live',     icon: <MdLiveTv />,              keyword: 'Live' },
-  { name: 'News',     icon: <BiNews />,                keyword: 'News' },
-  { name: 'World',    icon: <FaGlobe />,               keyword: 'World' },
+  { name: 'Home',      icon: <MdHome />,                keyword: 'New Videos' },
+  { name: 'Trending',  icon: <MdLocalFireDepartment />, keyword: 'Trending' },
+  { name: 'Coding',    icon: <FaCode />,                keyword: 'Coding' },
+  { name: 'Music',     icon: <BsMusicNoteBeamed />,     keyword: 'Music' },
+  { name: 'Gaming',    icon: <MdSportsEsports />,       keyword: 'Gaming' },
+  { name: 'Movies',    icon: <GiFilmProjector />,       keyword: 'Movies Trailers' },
+  { name: 'Live',      icon: <MdLiveTv />,              keyword: 'Live' },
+  { name: 'News',      icon: <BiNews />,                keyword: 'News' },
+  { name: 'Sports',    icon: <MdSportsBasketball />,    keyword: 'Sports' },
+  { name: 'Comedy',    icon: <FaLaughSquint />,         keyword: 'Comedy' },
+  { name: 'Education', icon: <MdSchool />,              keyword: 'Education' },
+  { name: 'World',     icon: <FaGlobe />,               keyword: 'World' },
 ];
 
 export const demoThumbnailUrl = 'https://i.ibb.co/G2L2Gwp/API-Course.png';

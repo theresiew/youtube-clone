@@ -9,21 +9,19 @@ const ChannelCard = ({ channelDetail, marginTop }) => {
     >
       <Link to={`/channel/${channelDetail?.id?.channelId || channelDetail?.id}`}>
         <div className="flex flex-col items-center gap-3">
-          {/* Avatar */}
+         
           <img
             src={channelDetail?.snippet?.thumbnails?.high?.url || demoProfilePicture}
             alt={channelDetail?.snippet?.title}
             className="w-24 h-24 rounded-full object-cover border-2 border-[#3f3f3f]"
           />
 
-          {/* Channel Name */}
           <div className="text-center">
             <h3 className="text-white font-semibold flex items-center gap-1 justify-center">
               {channelDetail?.snippet?.title}
               <MdCheckCircle className="text-gray-400 text-sm" />
             </h3>
 
-            {/* Subscriber Count */}
             {channelDetail?.statistics?.subscriberCount && (
               <p className="text-[#aaaaaa] text-xs mt-1">
                 {parseInt(channelDetail?.statistics?.subscriberCount).toLocaleString()} subscribers

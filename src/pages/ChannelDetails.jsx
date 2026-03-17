@@ -16,23 +16,19 @@ const ChannelDetails = () => {
 
   const { data: channelVideos } = useQuery({
     queryKey: ['channelVideos', id],
-    queryFn: () => fetchFromAPI(`search?channelId=${id}&part=snippet&order=date`),
+    queryFn: () => fetchFromAPI(`search?channelId=${id}&part=snippet&order=date&maxResults=20&type=video`),
   });
 
   const channel = channelDetail?.items[0];
 
-  if (isLoading) return <div className="pt-14"><Loader /></div>;
+  if (isLoading) return <div className="pt-14 bg-[#0f0f0f] min-h-screen"><Loader /></div>;
 
   return (
-    <div className="pt-14 min-h-screen">
+    <div className="pt-14 min-h-screen bg-[#0f0f0f] pb-14 md:pb-0">
       {/* Banner */}
       <div className="relative h-36 md:h-48 bg-gradient-to-r from-red-900 via-red-700 to-red-500">
         {channel?.brandingSettings?.image?.bannerExternalUrl && (
-          <img
-            src={channel?.brandingSettings?.image?.bannerExternalUrl}
-            alt="banner"
-            className="w-full h-full object-cover"
-          />
+          <img src={channel?.brandingSettings?.image?.bannerExternalUrl} alt="banner" className="w-full h-full object-cover" />
         )}
       </div>
 
@@ -43,6 +39,7 @@ const ChannelDetails = () => {
             src={channel?.snippet?.thumbnails?.high?.url}
             alt={channel?.snippet?.title}
             className="w-24 h-24 rounded-full border-4 border-[#0f0f0f] object-cover"
+            onError={(e) => { e.target.onerror = null; e.target.src = `https://picsum.photos/seed/${id}/96/96`; }}
           />
           <div className="text-center sm:text-left pb-2">
             <h1 className="text-white text-2xl font-bold flex items-center gap-2 justify-center sm:justify-start">
@@ -58,6 +55,9 @@ const ChannelDetails = () => {
               {channel?.snippet?.description}
             </p>
           </div>
+          <button className="ml-auto bg-white text-black font-bold px-6 py-2 rounded-full hover:bg-gray-200 transition">
+            Subscribe
+          </button>
         </div>
 
         {/* Tabs */}
@@ -67,9 +67,7 @@ const ChannelDetails = () => {
               key={tab}
               onClick={() => setSelectedTab(tab)}
               className={`pb-3 text-sm font-medium transition border-b-2 ${
-                selectedTab === tab
-                  ? 'text-white border-white'
-                  : 'text-[#aaaaaa] border-transparent hover:text-white'
+                selectedTab === tab ? 'text-white border-white' : 'text-[#aaaaaa] border-transparent hover:text-white'
               }`}
             >
               {tab}
@@ -80,7 +78,7 @@ const ChannelDetails = () => {
         {/* Videos Grid */}
         {selectedTab === 'Videos' && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-8">
-            {channelVideos?.items?.filter(item => item.id.videoId).map((video, idx) => (
+            {channelVideos?.items?.filter(item => item.id?.videoId).map((video, idx) => (
               <VideoCard key={idx} video={video} />
             ))}
           </div>

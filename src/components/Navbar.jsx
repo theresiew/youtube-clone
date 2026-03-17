@@ -18,7 +18,7 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-[999] flex items-center justify-between px-3 md:px-4 h-14 bg-[#0f0f0f] border-b border-[#272727]">
 
-      {/* Left - Logo */}
+ 
       <div className="flex items-center gap-3 min-w-fit">
         <button className="p-2 rounded-full hover:bg-[#272727] transition hidden md:block">
           <HiMenuAlt1 className="text-white text-xl" />
@@ -32,7 +32,6 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* Center - Search */}
       <form onSubmit={handleSearch} className="flex items-center w-full max-w-xs sm:max-w-md md:max-w-xl mx-2 md:mx-4">
         <input
           type="text"
@@ -49,7 +48,6 @@ const Navbar = () => {
         </button>
       </form>
 
-      {/* Right - Avatar */}
       <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm min-w-fit cursor-pointer hover:opacity-90 transition">
         U
       </div>
