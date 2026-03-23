@@ -22,7 +22,6 @@ const Feed = () => {
   return (
     <div className="flex min-h-screen" style={{ background: '#0a0a0a', paddingTop: '56px' }}>
 
-      {/* Sidebar */}
       <div className="hidden md:block fixed left-0 bottom-0 w-56 overflow-y-auto z-40"
         style={{ top: '56px', borderRight: '1px solid #1a1a1a', background: '#0a0a0a' }}>
         <Sidebar
@@ -31,10 +30,8 @@ const Feed = () => {
         />
       </div>
 
-      {/* Main Content */}
       <div className="flex-1 min-w-0 pb-20 md:pb-8" style={{ marginLeft: '224px' }}>
 
-        {/* Filter Pills */}
         <div className="sticky z-30 px-6 py-3"
           style={{ top: '56px', background: 'rgba(10,10,10,0.95)', backdropFilter: 'blur(8px)', borderBottom: '1px solid #1a1a1a' }}>
           <div className="flex gap-2 overflow-x-auto pill-scroll">
@@ -54,7 +51,6 @@ const Feed = () => {
           </div>
         </div>
 
-        {/* Videos */}
         <div className="px-6 pt-6">
           <div className="flex items-baseline gap-2 mb-5">
             <h2 className="text-sm font-semibold" style={{ color: '#e8e8e8' }}>
@@ -83,7 +79,6 @@ const Feed = () => {
         </div>
       </div>
 
-      {/* Mobile Bottom Nav */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex justify-around items-center h-14"
         style={{ background: 'rgba(10,10,10,0.96)', backdropFilter: 'blur(12px)', borderTop: '1px solid #1a1a1a' }}>
         {[
